@@ -21,6 +21,32 @@
           "note": "sec1 == pub2"
         }
       ],
+      "calc_padded_len": [
+        [16, 32],
+        [32, 32],
+        [33, 64],
+        [37, 64],
+        [45, 64],
+        [49, 64],
+        [64, 64],
+        [65, 96],
+        [100, 128],
+        [111, 128],
+        [200, 224],
+        [250, 256],
+        [320, 320],
+        [383, 384],
+        [384, 384],
+        [400, 448],
+        [500, 512],
+        [512, 512],
+        [515, 640],
+        [700, 768],
+        [800, 896],
+        [900, 1024],
+        [1020, 1024],
+        [65536, 65536]
+      ],
       "encrypt_decrypt": [
         {
           "sec1": "0000000000000000000000000000000000000000000000000000000000000001",
@@ -28,8 +54,7 @@
           "conversation_key": "c41c775356fd92eadc63ff5a0dc1da211b268cbea22316767095b2871ea1412d",
           "nonce": "0000000000000000000000000000000000000000000000000000000000000001",
           "plaintext": "a",
-          "ciphertext": "AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABee0G5VSK0/9YypIObAtDKfYEAjD35uVkHyB0F4DwrcNaCXlCWZKaArsGrY6M9wnuTMxWfp1RTN9Xga8no+kF5Vsb",
-          "note": "sk1 = 1, sk2 = random, 0x02"
+          "ciphertext": "AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABee0G5VSK0/9YypIObAtDKfYEAjD35uVkHyB0F4DwrcNaCXlCWZKaArsGrY6M9wnuTMxWfp1RTN9Xga8no+kF5Vsb"
         },
         {
           "sec1": "0000000000000000000000000000000000000000000000000000000000000002",
@@ -37,8 +62,7 @@
           "conversation_key": "c41c775356fd92eadc63ff5a0dc1da211b268cbea22316767095b2871ea1412d",
           "nonce": "f00000000000000000000000000000f00000000000000000000000000000000f",
           "plaintext": "🍕🫃",
-          "ciphertext": "AvAAAAAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAAAAAAAPSKSK6is9ngkX2+cSq85Th16oRTISAOfhStnixqZziKMDvB0QQzgFZdjLTPicCJaV8nDITO+QfaQ61+KbWQIOO2Yj",
-          "note": "sk1 = 1, sk2 = random, 0x02"
+          "ciphertext": "AvAAAAAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAAAAAAAPSKSK6is9ngkX2+cSq85Th16oRTISAOfhStnixqZziKMDvB0QQzgFZdjLTPicCJaV8nDITO+QfaQ61+KbWQIOO2Yj"
         },
         {
           "sec1": "5c0c523f52a5b6fad39ed2403092df8cebc36318b39383bca6c00808626fab3a",
@@ -46,8 +70,7 @@
           "conversation_key": "3e2b52a63be47d34fe0a80e34e73d436d6963bc8f39827f327057a9986c20a45",
           "nonce": "b635236c42db20f021bb8d1cdff5ca75dd1a0cc72ea742ad750f33010b24f73b",
           "plaintext": "表ポあA鷗ŒéＢ逍Üßªąñ丂㐀𠀀",
-          "ciphertext": "ArY1I2xC2yDwIbuNHN/1ynXdGgzHLqdCrXUPMwELJPc7s7JqlCMJBAIIjfkpHReBPXeoMCyuClwgbT419jUWU1PwaNl4FEQYKCDKVJz+97Mp3K+Q2YGa77B6gpxB/lr1QgoqpDf7wDVrDmOqGoiPjWDqy8KzLueKDcm9BVP8xeTJIxs=",
-          "note": "unicode-heavy string"
+          "ciphertext": "ArY1I2xC2yDwIbuNHN/1ynXdGgzHLqdCrXUPMwELJPc7s7JqlCMJBAIIjfkpHReBPXeoMCyuClwgbT419jUWU1PwaNl4FEQYKCDKVJz+97Mp3K+Q2YGa77B6gpxB/lr1QgoqpDf7wDVrDmOqGoiPjWDqy8KzLueKDcm9BVP8xeTJIxs="
         },
         {
           "sec1": "8f40e50a84a7462e2b8d24c28898ef1f23359fff50d8c509e6fb7ce06e142f9c",
@@ -164,106 +187,64 @@
             "note": "pub2 is point of order 3319 on twist"
           }
         ],
-        "general": [
+        "decrypt": [
           {
-            "sec1": "2573d1e9b9ac5de5d570f652cbb9e8d4f235e3d3d334181448e87c417f374e83",
-            "pub2": "8348c2d35549098706e5bab7966d9a9c72fbf6554e918f41c2b6cb275f79ec13",
             "conversation_key": "ca2527a037347b91bea0c8a30fc8d9600ffd81ec00038671e3a0f0cb0fc9f642",
             "nonce": "daaea5ca345b268e5b62060ca72c870c48f713bc1e00ff3fc0ddb78e826f10db",
             "plaintext": "n o b l e",
-            "ciphertext": "Atqupco0WyaOW2IGDKcshwxI9xO8HgD/P8Ddt46CbxDbrhdG8VmJdU0MIDf06CUvEvdnr1cp1fiMtlM/GrE92xAc1K5odTpCzUB+mjXgbaqtntBUbTToSUoT0ovrlPwzGjyp",
-            "note": "unknown encryption version #"
+            "ciphertext": "#Atqupco0WyaOW2IGDKcshwxI9xO8HgD/P8Ddt46CbxDbrhdG8VmJdU0MIDf06CUvEvdnr1cp1fiMtlM/GrE92xAc1K5odTpCzUB+mjXgbaqtntBUbTToSUoT0ovrlPwzGjyp",
+            "note": "unknown encryption version"
           },
           {
-            "sec1": "11063318c5cb3cd9cafcced42b4db5ea02ec976ed995962d2bc1fa1e9b52e29f",
-            "pub2": "5c49873b6eac3dd363325250cc55d5dd4c7ce9a885134580405736d83506bb74",
             "conversation_key": "36f04e558af246352dcf73b692fbd3646a2207bd8abd4b1cd26b234db84d9481",
             "nonce": "ad408d4be8616dc84bb0bf046454a2a102edac937c35209c43cd7964c5feb781",
             "plaintext": "⚠️",
-            "ciphertext": "Aq1AjUvoYW3IS7C/BGRUoqEC7ayTfDUgnEPNeWTF/reBZFaha6EAIRueE9D1B1RuoiuFScC0Q94yjIuxZD3JStQtEyqfcfEZcZoqOCRhNIibbSYrXpfXF/BXFppd8/6mNUiB",
+            "ciphertext": "AK1AjUvoYW3IS7C/BGRUoqEC7ayTfDUgnEPNeWTF/reBZFaha6EAIRueE9D1B1RuoiuFScC0Q94yjIuxZD3JStQtE8JMNacWFs9rlYP+ZydtHhRucp+lxfdvFlaGV/sQlqZz",
             "note": "unknown encryption version 0"
           },
           {
-            "sec1": "2573d1e9b9ac5de5d570f652cbb9e8d4f235e3d3d334181448e87c417f374e83",
-            "pub2": "8348c2d35549098706e5bab7966d9a9c72fbf6554e918f41c2b6cb275f79ec13",
             "conversation_key": "ca2527a037347b91bea0c8a30fc8d9600ffd81ec00038671e3a0f0cb0fc9f642",
             "nonce": "daaea5ca345b268e5b62060ca72c870c48f713bc1e00ff3fc0ddb78e826f10db",
             "plaintext": "n o s t r",
-            "ciphertext": "Atqupco0WyaOW2IGDKcshwxI9xO8HgD/P8Ddt46CbxDbrhdG8VmJZE0UICD06CUvEvdnr1cp1fiMtlM/GrE92xAc1Ah1ZNNeJ1uIcHt+Fq+DfKA1Z7O2xsdBv05lsrM9MH+E",
+            "ciphertext": "Atфupco0WyaOW2IGDKcshwxI9xO8HgD/P8Ddt46CbxDbrhdG8VmJZE0UICD06CUvEvdnr1cp1fiMtlM/GrE92xAc1EwsVCQEgWEu2gsHUVf4JAa3TpgkmFc3TWsax0v6n/Wq",
             "note": "invalid base64"
           },
           {
-            "sec1": "5a2f39347fed3883c9fe05868a8f6156a292c45f606bc610495fcc020ed158f7",
-            "pub2": "775bbfeba58d07f9d1fbb862e306ac780f39e5418043dadb547c7b5900245e71",
             "conversation_key": "cff7bd6a3e29a450fd27f6c125d5edeb0987c475fd1e8d97591e0d4d8a89763c",
             "nonce": "09ff97750b084012e15ecb84614ce88180d7b8ec0d468508a86b6d70c0361a25",
             "plaintext": "¯\\_(ツ)_/¯",
-            "ciphertext": "Agn/l3ULCEAS4V7LhGFM6IGA17jsDUaFCKhrbXDANholyySBfeh+EN8wNB9gaLlg4j6wdBYh+3oK+mnxWu3NKRbSvYzFzZGuPxJJz8bqaQQCXshJoyDZ4r/Il35V5wefequL",
+            "ciphertext": "Agn/l3ULCEAS4V7LhGFM6IGA17jsDUaFCKhrbXDANholyySBfeh+EN8wNB9gaLlg4j6wdBYh+3oK+mnxWu3NKRbSvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
             "note": "invalid MAC"
           },
           {
-            "sec1": "067eda13c4a36090ad28a7a183e9df611186ca01f63cb30fcdfa615ebfd6fb6d",
-            "pub2": "32c1ece2c5dd2160ad03b243f50eff12db605b86ac92da47eacc78144bf0cdd3",
             "conversation_key": "cfcc9cf682dfb00b11357f65bdc45e29156b69db424d20b3596919074f5bf957",
             "nonce": "65b14b0b949aaa7d52c417eb753b390e8ad6d84b23af4bec6d9bfa3e03a08af4",
             "plaintext": "🥎",
-            "ciphertext": "AmWxSwuUmqp9UsQX63U7OQ6K1thLI69L7G2b+j4DoIr0oRWQ8avl4OLqWZiTJ10vIgKrNqjoaX+fNhE9RqmR5g0f6PgOG40/PklzPp1TNFYqFNg+W0wgUI5DPebjILx/C0X1",
+            "ciphertext": "AmWxSwuUmqp9UsQX63U7OQ6K1thLI69L7G2b+j4DoIr0oRWQ8avl4OLqWZiTJ10vIgKrNqjoaX+fNhE9RqmR5g0f6BtUg1ijFMz71MO1D4lQLQfW7+UHva8PGYgQ1QpHlKgR",
             "note": "invalid MAC"
           },
           {
-            "sec1": "3e7be560fb9f8c965c48953dbd00411d48577e200cf00d7cc427e49d0e8d9c01",
-            "pub2": "e539e5fee58a337307e2a937ee9a7561b45876fb5df405c5e7be3ee564b239cc",
             "conversation_key": "5254827d29177622d40a7b67cad014fe7137700c3c523903ebbe3e1b74d40214",
             "nonce": "7ab65dbb8bbc2b8e35cafb5745314e1f050325a864d11d0475ef75b3660d91c1",
             "plaintext": "elliptic-curve cryptography",
-            "ciphertext": "Anq2XbuLvCuONcr7V0UxTh8FAyWoZNEdBHXvdbNmDZHB55/MI7R7rrTYftpqmvUpahmBC2sngmI14/L0HjOZ7lWGJqDTDsL//o4u+FAX/SgyMkOe6NIWDy09gMSliSVluklz",
+            "ciphertext": "Anq2XbuLvCuONcr7V0UxTh8FAyWoZNEdBHXvdbNmDZHB573MI7R7rrTYftpqmvUpahmBC2sngmI14/L0HjOZ7lWGJlzdh6luiOnGPc46cGxf08MRC4CIuxx3i2Lm0KqgJ7vA",
             "note": "invalid padding"
           },
           {
-            "sec1": "c22e1d4de967aa39dc143354d8f596cec1d7c912c3140831fff2976ce3e387c1",
-            "pub2": "4e405be192677a2da95ffc733950777213bf880cf7c3b084eeb6f3fe5bd43705",
             "conversation_key": "fea39aca9aa8340c3a78ae1f0902aa7e726946e4efcd7783379df8096029c496",
             "nonce": "7d4283e3b54c885d6afee881f48e62f0a3f5d7a9e1cb71ccab594a7882c39330",
-            "plaintext": "Peer-to-Peer",
-            "ciphertext": "An1Cg+O1TIhdav7ogfSOYvCj9dep4ctxzKtZSniCw5MwRrbxLlueCfIOyAoGbhYYzny5LIQ9v9lhqmZR4WBYRNJ0ojsRaLBGCI4qOFTebUHTIn38hQyknZuLnO+i6VMQYLja",
+            "plaintext": "noble",
+            "ciphertext": "An1Cg+O1TIhdav7ogfSOYvCj9dep4ctxzKtZSniCw5MwRrrPJFyAQYZh5VpjC2QYzny5LIQ9v9lhqmZR4WBYRNJ0ognHVNMwiFV1SHpvUFT8HHZN/m/QarflbvDHAtO6pY16",
             "note": "invalid padding"
           },
           {
-            "sec1": "be1edab14c5912e5c59084f197f0945242e969c363096cccb59af8898815096f",
-            "pub2": "9eaf0775d971e4941c97189232542e1daefcdb7dddafc39bcea2520217710ba2",
             "conversation_key": "0c4cffb7a6f7e706ec94b2e879f1fc54ff8de38d8db87e11787694d5392d5b3f",
             "nonce": "6f9fd72667c273acd23ca6653711a708434474dd9eb15c3edb01ce9a95743e9b",
             "plaintext": "censorship-resistant and global social network",
-            "ciphertext": "Am+f1yZnwnOs0jymZTcRpwhDRHTdnrFcPtsBzpqVdD6b2NZDaNm/TPkZGr75kbB6tCSoq7YRcbPiNfJXNch3Tf+o9+zZTMxwjgX/nm3yDKR2kHQMBhVleCB9uPuljl40AJ8kouFbJGHWU554B31MDCpw/GvcsAq203IHdKYnflKH9pw=",
+            "ciphertext": "Am+f1yZnwnOs0jymZTcRpwhDRHTdnrFcPtsBzpqVdD6b2NZDaNm/TPkZGr75kbB6tCSoq7YRcbPiNfJXNch3Tf+o9+zZTMxwjgX/nm3yDKR2kHQMBhVleCB9uPuljl40AJ8kXRD0gjw+aYRJFUMK9gCETZAjjmrsCM+nGRZ1FfNsHr6Z",
             "note": "invalid padding"
           }
         ]
-    },
-    "calc_padded_len": [
-      [16, 32],
-      [32, 32],
-      [33, 64],
-      [37, 64],
-      [45, 64],
-      [49, 64],
-      [64, 64],
-      [65, 96],
-      [100, 128],
-      [111, 128],
-      [200, 224],
-      [250, 256],
-      [320, 320],
-      [383, 384],
-      [384, 384],
-      [400, 448],
-      [500, 512],
-      [512, 512],
-      [515, 640],
-      [700, 768],
-      [800, 896],
-      [900, 1024],
-      [1020, 1024],
-      [65536, 65536]
-    ]
+    }
   }
 }

@@ -25,33 +25,27 @@ should('NIP44: valid.get_conversation_key', async () => {
     strictEqual(bytesToHex(key), v.conversation_key);
   }
 });
-should('NIP44: invalid', async () => {
-  for (const v of v2vec.invalid.general) {
-    throws(
-      () => {
-        const key = v2.utils.getConversationKey(v.sec1, v.pub2);
-        v2.decrypt(v.ciphertext, key);
-      },
-      { message: new RegExp(v.note) }
-    );
-  }
-});
-should('NIP44: invalid_conversation_key', async () => {
-  for (const v of v2vec.invalid.get_conversation_key) {
-    throws(
-      () => {
-        v2.utils.getConversationKey(v.sec1, v.pub2);
-        const key = v2.utils.getConversationKey(v.sec1, v.pub2);
-        v2.encrypt('a', key);
-      },
-      { message: /(Point is not on curve|Cannot find square root)/ }
-    );
-  }
-});
-should('NIP44: v1 calcPadding', () => {
-  for (const [len, shouldBePaddedTo] of v2vec.calc_padded_len) {
+should('NIP44: valid.calc_padded_len', () => {
+  for (const [len, shouldBePaddedTo] of v2vec.valid.calc_padded_len) {
     const actual = v2.utils.calcPaddedLen(len);
     strictEqual(actual, shouldBePaddedTo);
+  }
+});
+should('NIP44: invalid.decrypt', async () => {
+  for (const v of v2vec.invalid.decrypt) {
+    throws(
+      () => {
+        v2.decrypt(v.ciphertext, hexToBytes(v.conversation_key));
+      },
+      { message: new RegExp(v.note) },
+    );
+  }
+});
+should('NIP44: invalid.get_conversation_key', async () => {
+  for (const v of v2vec.invalid.get_conversation_key) {
+    throws(() => v2.utils.getConversationKey(v.sec1, v.pub2), {
+      message: /(Point is not on curve|Cannot find square root)/,
+    });
   }
 });
 should.run();
