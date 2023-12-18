@@ -122,8 +122,7 @@ def pad(plaintext):
       unpadded_len > c.max_plaintext_size): raise Exception('invalid plaintext length')
   prefix = write_u16_be(unpadded_len)
   suffix = zeros(calc_padded_len(unpadded_len) - unpadded_len)
-  padded_bytes = concat(prefix, unpadded, suffix)
-  return padded_bytes
+  return concat(prefix, unpadded, suffix)
 
 # Converts padded bytearray to unpadded plaintext
 def unpad(padded):
@@ -132,16 +131,15 @@ def unpad(padded):
   if (unpadded_len == 0 or
       len(unpadded) != unpadded_len or
       len(padded) != 2 + calc_padded_len(unpadded_len)): raise Exception('invalid padding')
-  plaintext = utf8_decode(unpadded)
-  return plaintext
+  return utf8_decode(unpadded)
 
 def decode_payload(payload):
   if (len(payload) < 1 or payload[0] == '#'): raise Exception('unknown version')
   data = base64_decode(payload)
   dlen = len(d)
-  if dlen < 99: raise Exception('invalid msg size')
   vers = data[0]
-  if vers != 2: raise Exception('unknown version ' + vers)
+  if dlen == 0 or vers != 2: raise Exception('unknown version ' + vers)
+  if dlen < 99: raise Exception('invalid msg size')
   nonce = data[1:33]
   ciphertext = data[33:dlen - 32]
   mac = data[dlen - 32:dlen]
@@ -154,8 +152,7 @@ def hmac_aad(key, message, aad):
 # Calculates long-term key between users A and B: `get_key(Apriv, Bpub) == get_key(Bpriv, Apub)`
 def get_conversation_key(private_key_a, public_key_b):
   shared_x = secp256k1_ecdh(private_key_a, public_key_b)
-  conversation_key = hkdf_extract(IKM=shared_x, salt=utf8_encode('nip44-v2'))
-  return conversation_key
+  return hkdf_extract(IKM=shared_x, salt=utf8_encode('nip44-v2'))
 
 # Calculates unique per-message key
 def get_message_keys(conversation_key, nonce):
@@ -172,17 +169,15 @@ def encrypt(plaintext, conversation_key, nonce):
   padded = pad(plaintext)
   ciphertext = chacha20(key=chacha_key, nonce=chacha_nonce, data=padded)
   mac = hmac_aad(key=hmac_key, message=ciphertext, aad=nonce)
-  payload = base64_encode(concat(write_u8(2), nonce, ciphertext, mac))
-  return payload
+  return base64_encode(concat(write_u8(2), nonce, ciphertext, mac))
 
 def decrypt(payload, conversation_key):
   (nonce, ciphertext, mac) = decode_payload(payload)
   (chacha_key, chacha_nonce, hmac_key) = get_message_keys(conversation_key, nonce)
   calculated_mac = hmac_aad(key=hmac_key, message=ciphertext, aad=nonce)
   if not is_equal_ct(calculated_mac, mac): raise Exception('invalid MAC')
-  padded = chacha20(key=chacha_key, nonce=chacha_nonce, data=ciphertext)
-  plaintext = unpad(unpadded)
-  return plaintext
+  padded_plaintext = chacha20(key=chacha_key, nonce=chacha_nonce, data=ciphertext)
+  return unpad(padded_plaintext)
 
 # Usage:
 #   conversation_key = get_conversation_key(sender_privkey, recipient_pubkey)
@@ -216,7 +211,10 @@ def decrypt(payload, conversation_key):
    - Plaintext length is encoded in big-endian as first two bytes of the padded blob
 5. Encrypt padded content
    - Use ChaCha20, with key and nonce from step 3
-6. Calculate MAC (message authentication code) over ciphertext
+6. Calculate MAC (message authentication code) with AAD
+   - AAD is used: instead of calculating MAC on ciphertext,
+     it's calculated over a concatenation of `nonce` and `ciphertext`
+   - It's necessary to verify the nonce is 32-byte
 7. Base64-encode (with padding) params: `concat(version, nonce, ciphertext, mac)`
 
 After encryption, it's necessary to sign it. Use NIP-01 to serialize the event,
@@ -240,7 +238,7 @@ secp256k1 schnorr signature. For exact validation rules, refer to BIP-340.
    - See step 1 of Encryption
 4. Calculate message keys
    - See step 3 of Encryption
-5. Calculate MAC (message authentication code) over ciphertext and compare
+5. Calculate MAC (message authentication code) with AAD and compare
    - Stop and throw an error if MAC doesn't match the decoded one from step 2
    - Use constant-time comparison algorithm
 6. Decrypt ciphertext
@@ -258,7 +256,7 @@ available [on GitHub](https://github.com/paulmillr/nip44).
 We publish extensive test vectors. Instead of having it in the
 document directly, a sha256 checksum of vectors is provided:
 
-    800a958e075c514d7a399d9117d245017f2e39c442526136e5b1031f72c99e68  nip44.vectors.json
+    eae34c1d4eff1b58b448627d3310e495f7f0722ca6668296e7c31e88edf18171  nip44.vectors.json
 
 Example of test vector from the file:
 
@@ -269,7 +267,7 @@ Example of test vector from the file:
   "conversation_key": "c41c775356fd92eadc63ff5a0dc1da211b268cbea22316767095b2871ea1412d",
   "nonce": "0000000000000000000000000000000000000000000000000000000000000001",
   "plaintext": "a",
-  "ciphertext": "AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABee0G5VSK0/9YypIObAtDKfYEAjD35uVkHyB0F4DwrcNaCXlCWZKaArsGrY6M9wnuTMxWfp1RTN9Xga8no+kF5Vsb"
+  "payload": "AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABee0G5VSK0/9YypIObAtDKfYEAjD35uVkHyB0F4DwrcNaCXlCWZKaArsGrY6M9wnuTMxWfp1RTN9Xga8no+kF5Vsb"
 }
 ```
 
@@ -279,9 +277,9 @@ The file also contains intermediate values. A quick guidance with regards to its
 - `valid.get_message_keys`: calculate chacha_key, chacha_nocne, hmac_key from conversation_key and nonce
 - `valid.calc_padded_len`: take unpadded length (first value), calculate padded length (second value)
 - `valid.encrypt_decrypt`: emulate real conversation. Calculate
-  pub2 from sec2, verify conversation_key from (sec1, pub2), encrypt, verify ciphertext,
+  pub2 from sec2, verify conversation_key from (sec1, pub2), encrypt, verify payload,
   then calculate pub1 from sec1, verify conversation_key from (sec2, pub1), decrypt, verify plaintext.
-- `valid.encrypt_decrypt_long_msg`: same as previous step, but instead of a full plaintext and ciphertext,
+- `valid.encrypt_decrypt_long_msg`: same as previous step, but instead of a full plaintext and payload,
   their checksum is provided.
 - `invalid.encrypt_msg_lengths`
 - `invalid.get_conversation_key`: calculating converastion_key must throw an error
